@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Course - LMS Portal</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        header {
+            background: #2563eb;
+            color: white;
+            padding: 18px 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        .back-btn {
+            background: white;
+            color: #2563eb;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .course-header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .course-header h2 {
+            color: #2563eb;
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .course-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .progress-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 18px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #16a34a;
+            transition: 0.3s;
+        }
+
+        .section-title {
+            margin: 30px 0 20px;
+        }
+
+        .topic-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .topic-info h3 {
+            margin-bottom: 8px;
+        }
+
+        .topic-info p {
+            color: #666;
+        }
+
+        .topic-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .youtube-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        .complete-btn {
+            background: #16a34a;
+            color: white;
+        }
+
+        .completed {
+            background: #15803d;
+        }
+
+        .quiz-btn {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+
+            background: #7c3aed;
+            color: white;
+
+            padding: 15px;
+
+            border: none;
+            border-radius: 8px;
+
+            font-size: 17px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .quiz-btn:hover {
+            background: #6d28d9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        .error {
+            background: white;
+            padding: 25px;
+            text-align: center;
+            color: #dc2626;
+            border-radius: 10px;
+        }
+
+        footer {
+            margin-top: 50px;
+            background: #172554;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 700px) {
+
+            .topic-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .topic-actions {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🎓 LMS Portal</h1>
+
+    <button
+        class="back-btn"
+        onclick="goDashboard()">
+
+        ← Dashboard
+
+    </button>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- Course Details -->
+
+    <div
+        class="course-header">
+
+        <h2 id="courseTitle">
+            Loading...
+        </h2>
+
+        <p id="courseDescription">
+            Loading course details...
+        </p>
+
+    </div>
+
+
+    <!-- Progress -->
+
+    <div class="progress-box">
+
+        <div class="progress-header">
+
+            <span>
+                📊 Course Progress
+            </span>
+
+            <span id="progressText">
+                0%
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                id="progressFill"
+                class="progress-fill">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Topics -->
+
+    <h2 class="section-title">
+        📚 Course Topics
+    </h2>
+
+
+    <div id="topicsContainer">
+
+        <p class="loading">
+            Loading topics...
+        </p>
+
+    </div>
+
+
+    <!-- Quiz -->
+
+    <button
+        id="quizButton"
+        class="quiz-btn"
+        onclick="startQuiz()">
+
+        📝 Take Course Quiz
+
+    </button>
+
+
+</div>
+
+
+<footer>
+
+    <p>
+        © 2026 LMS Portal |
+        Learning Management System
+    </p>
+
+</footer>
+
+
+<script>
+
+
+    // Get course ID
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const courseId =
+        params.get("id");
+
+
+    const COURSE_API =
+        "http://localhost:8080/api/courses/"
+        + courseId;
+
+
+    // Topics for each course
+
+    const courseTopics = {
+
+        3: [
+
+            {
+                title: "Java Basics",
+                description: "Variables, data types and operators",
+                youtube: "https://www.youtube.com/results?search_query=Java+programming+basics"
+            },
+
+            {
+                title: "Conditional Statements",
+                description: "if, else and switch",
+                youtube: "https://www.youtube.com/results?search_query=Java+if+else+switch"
+            },
+
+            {
+                title: "Loops",
+                description: "for, while and do-while loops",
+                youtube: "https://www.youtube.com/results?search_query=Java+loops+tutorial"
+            },
+
+            {
+                title: "Arrays",
+                description: "One-dimensional and multi-dimensional arrays",
+                youtube: "https://www.youtube.com/results?search_query=Java+arrays+tutorial"
+            },
+
+            {
+                title: "OOP Concepts",
+                description: "Class, object, inheritance and polymorphism",
+                youtube: "https://www.youtube.com/results?search_query=Java+OOP+tutorial"
+            },
+
+            {
+                title: "Exception Handling",
+                description: "try, catch, finally and throw",
+                youtube: "https://www.youtube.com/results?search_query=Java+exception+handling"
+            },
+
+            {
+                title: "Collections",
+                description: "List, Set, Map and ArrayList",
+                youtube: "https://www.youtube.com/results?search_query=Java+collections+tutorial"
+            }
+
+        ]
+
+    };
+
+
+    let topics = [];
+
+
+    // Load course
+
+    async function loadCourse() {
+
+        try {
+
+            const response =
+                await fetch(COURSE_API);
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Course not found"
+                );
+
+            }
+
+
+            const course =
+                await response.json();
+
+
+            document
+                .getElementById("courseTitle")
+                .innerText =
+                course.title;
+
+
+            document
+                .getElementById("courseDescription")
+                .innerText =
+                course.description;
+
+
+            topics =
+                courseTopics[courseId] || [];
+
+
+            displayTopics();
+
+
+            updateProgress();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+
+            document
+                .getElementById("courseTitle")
+                .innerText =
+                "Course unavailable";
+
+
+            document
+                .getElementById("courseDescription")
+                .innerText =
+                "Unable to load course.";
+
+        }
+
+    }
+
+
+    // Display topics
+
+    function displayTopics() {
+
+        const container =
+            document.getElementById(
+                "topicsContainer"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (topics.length === 0) {
+
+            container.innerHTML = `
+                <div class="error">
+                    No topics available for this course yet.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        topics.forEach(
+            (topic, index) => {
+
+
+                const completed =
+                    getCompletedTopics()
+                        .includes(index);
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "topic-card";
+
+
+                card.innerHTML = `
+
+                    <div class="topic-info">
+
+                        <h3>
+                            ${index + 1}. ${topic.title}
+                        </h3>
+
+                        <p>
+                            ${topic.description}
+                        </p>
+
+                    </div>
+
+                    <div class="topic-actions">
+
+                        <button
+                            class="btn youtube-btn"
+                            onclick="openYoutube('${topic.youtube}')">
+
+                            ▶ YouTube
+
+                        </button>
+
+                        <button
+                            class="btn complete-btn ${completed ? "completed" : ""}"
+                            onclick="toggleTopic(${index})">
+
+                            ${completed
+                                ? "✓ Completed"
+                                : "Mark Complete"}
+
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(card);
+
+            }
+        );
+
+    }
+
+
+    // Get completed topics
+
+    function getCompletedTopics() {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "completedTopics_" + courseId
+            )
+        ) || [];
+
+    }
+
+
+    // Mark topic complete / incomplete
+
+    function toggleTopic(index) {
+
+        let completed =
+            getCompletedTopics();
+
+
+        if (completed.includes(index)) {
+
+            completed =
+                completed.filter(
+                    item => item !== index
+                );
+
+        } else {
+
+            completed.push(index);
+
+        }
+
+
+        localStorage.setItem(
+            "completedTopics_" + courseId,
+            JSON.stringify(completed)
+        );
+
+
+        displayTopics();
+
+        updateProgress();
+
+    }
+
+
+    // Update progress
+
+    function updateProgress() {
+
+        const completed =
+            getCompletedTopics();
+
+
+        const total =
+            topics.length;
+
+
+        let percentage = 0;
+
+
+        if (total > 0) {
+
+            percentage =
+                Math.round(
+                    (completed.length / total) * 100
+                );
+
+        }
+
+
+        document
+            .getElementById("progressText")
+            .innerText =
+            percentage + "%";
+
+
+        document
+            .getElementById("progressFill")
+            .style.width =
+            percentage + "%";
+
+    }
+
+
+    // Open YouTube
+
+    function openYoutube(url) {
+
+        window.open(
+            url,
+            "_blank"
+        );
+
+    }
+
+
+    // Start quiz
+
+    function startQuiz() {
+
+        window.location.href =
+            "quiz.html?id=" + courseId;
+
+    }
+
+
+    // Dashboard
+
+    function goDashboard() {
+
+        window.location.href =
+            "dashboard.html";
+
+    }
+
+
+    // Start
+
+    loadCourse();
+
+</script>
+
+
+</body>
+
+</html>

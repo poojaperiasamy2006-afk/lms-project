@@ -1,0 +1,720 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Code Playground - LMS</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        header {
+            background: #2563eb;
+            color: white;
+            padding: 18px 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        .back-btn {
+            background: white;
+            color: #2563eb;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: #eff6ff;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .title-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .title-card h2 {
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .title-card p {
+            color: #666;
+        }
+
+        .toolbar {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .toolbar label {
+            font-weight: bold;
+        }
+
+        select {
+            padding: 10px 14px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+            background: white;
+        }
+
+        .run-btn {
+            padding: 10px 22px;
+
+            background: #16a34a;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .run-btn:hover {
+            background: #15803d;
+        }
+
+        .clear-btn {
+            padding: 10px 22px;
+
+            background: #dc2626;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            background: #b91c1c;
+        }
+
+        .editor-card {
+            background: #1e1e1e;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .editor-header {
+            background: #2d2d2d;
+
+            color: white;
+
+            padding: 12px 18px;
+
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+
+            height: 380px;
+
+            background: #1e1e1e;
+
+            color: #f8f8f2;
+
+            border: none;
+
+            outline: none;
+
+            padding: 20px;
+
+            font-family: Consolas, "Courier New", monospace;
+
+            font-size: 15px;
+
+            line-height: 1.6;
+
+            resize: vertical;
+        }
+
+        .output-card {
+            background: white;
+
+            border-radius: 12px;
+
+            margin-top: 20px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.07);
+
+            overflow: hidden;
+        }
+
+        .output-header {
+            padding: 15px 18px;
+
+            font-weight: bold;
+
+            color: #2563eb;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        #output {
+            min-height: 120px;
+
+            padding: 20px;
+
+            white-space: pre-wrap;
+
+            font-family: Consolas, "Courier New", monospace;
+
+            color: #222;
+
+            line-height: 1.5;
+        }
+
+        .status {
+            padding: 10px 18px;
+
+            font-size: 14px;
+
+            color: #666;
+
+            border-top: 1px solid #eee;
+        }
+
+        .note {
+            margin-top: 18px;
+
+            background: #eff6ff;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            color: #1e40af;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 15px 20px;
+            }
+
+            header h1 {
+                font-size: 19px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .toolbar {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            textarea {
+                height: 300px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>
+        💻 LMS Code Playground
+    </h1>
+
+    <button
+        class="back-btn"
+        onclick="goDashboard()">
+
+        ← Dashboard
+
+    </button>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="title-card">
+
+        <h2>
+            🚀 Practice Coding
+        </h2>
+
+        <p>
+            Select a language, write your code,
+            and send it to the LMS backend.
+        </p>
+
+    </div>
+
+
+    <!-- TOOLBAR -->
+
+    <div class="toolbar">
+
+        <label for="language">
+            Language:
+        </label>
+
+
+        <select
+            id="language"
+            onchange="changeLanguage()">
+
+            <option value="java">
+                Java
+            </option>
+
+            <option value="python">
+                Python
+            </option>
+
+        </select>
+
+
+        <button
+            class="run-btn"
+            id="runButton"
+            onclick="runCode()">
+
+            ▶ Run Code
+
+        </button>
+
+
+        <button
+            class="clear-btn"
+            onclick="clearCode()">
+
+            Clear
+
+        </button>
+
+    </div>
+
+
+    <!-- CODE EDITOR -->
+
+    <div class="editor-card">
+
+        <div class="editor-header">
+
+            📝 Code Editor
+
+        </div>
+
+
+        <textarea
+            id="codeEditor"
+            spellcheck="false">public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println("Hello LMS!");
+
+    }
+
+}</textarea>
+
+    </div>
+
+
+    <!-- OUTPUT -->
+
+    <div class="output-card">
+
+        <div class="output-header">
+
+            🖥️ Output
+
+        </div>
+
+
+        <div id="output">
+
+            Click "Run Code" to send your code
+            to the LMS backend.
+
+        </div>
+
+
+        <div
+            class="status"
+            id="status">
+
+            Status: Ready
+
+        </div>
+
+    </div>
+
+
+    <div class="note">
+
+        💡 <strong>Practice Tip:</strong>
+
+        Start with simple programs and
+        practice the concepts learned in
+        your course.
+
+        <br><br>
+
+        ⚠️ The current backend validates the
+        request and returns a safe response.
+        Actual arbitrary code execution requires
+        a properly isolated sandbox.
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const editor =
+        document.getElementById(
+            "codeEditor"
+        );
+
+
+    const output =
+        document.getElementById(
+            "output"
+        );
+
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    const runButton =
+        document.getElementById(
+            "runButton"
+        );
+
+
+    // ==========================================
+    // CHANGE LANGUAGE
+    // ==========================================
+
+    function changeLanguage() {
+
+
+        const language =
+            document.getElementById(
+                "language"
+            ).value;
+
+
+        if (language === "java") {
+
+            editor.value =
+`public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println("Hello LMS!");
+
+    }
+
+}`;
+
+        }
+
+
+        else if (language === "python") {
+
+            editor.value =
+`print("Hello LMS!")`;
+
+        }
+
+
+        output.innerText =
+            'Click "Run Code" to send your code to the LMS backend.';
+
+
+        status.innerText =
+            "Status: Ready";
+
+    }
+
+
+    // ==========================================
+    // RUN CODE
+    // ==========================================
+
+    async function runCode() {
+
+
+        const language =
+            document.getElementById(
+                "language"
+            ).value;
+
+
+        const code =
+            editor.value;
+
+
+        // Empty code check
+
+        if (!code.trim()) {
+
+            output.innerText =
+                "❌ Please enter some code.";
+
+            status.innerText =
+                "Status: No code";
+
+            return;
+
+        }
+
+
+        // Disable button
+
+        runButton.disabled =
+            true;
+
+
+        runButton.innerText =
+            "⏳ Sending...";
+
+
+        output.innerText =
+            "Sending code to LMS backend...";
+
+
+        status.innerText =
+            "Status: Connecting";
+
+
+        try {
+
+
+            const response =
+                await fetch(
+                    "http://localhost:8080/api/code/run",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                language:
+                                    language,
+
+                                code:
+                                    code
+
+                            })
+
+                    }
+                );
+
+
+            // Read response
+
+            const data =
+                await response.json();
+
+
+            // Backend error
+
+            if (!response.ok) {
+
+                output.innerText =
+                    data.output ||
+                    "❌ Backend returned an error.";
+
+                status.innerText =
+                    "Status: Error";
+
+                return;
+
+            }
+
+
+            // Display backend output
+
+            output.innerText =
+                data.output ||
+                "No output received from backend.";
+
+
+            status.innerText =
+                "Status: Success ✅";
+
+
+        }
+
+
+        catch (error) {
+
+
+            console.error(
+                "Code execution error:",
+                error
+            );
+
+
+            output.innerText =
+                "❌ Cannot connect to LMS backend.\n\n" +
+                "Please make sure Spring Boot is running on port 8080.";
+
+
+            status.innerText =
+                "Status: Connection failed ❌";
+
+        }
+
+
+        finally {
+
+
+            runButton.disabled =
+                false;
+
+
+            runButton.innerText =
+                "▶ Run Code";
+
+        }
+
+    }
+
+
+    // ==========================================
+    // CLEAR CODE
+    // ==========================================
+
+    function clearCode() {
+
+
+        editor.value =
+            "";
+
+
+        output.innerText =
+            'Editor cleared. Click "Run Code" after entering code.';
+
+
+        status.innerText =
+            "Status: Ready";
+
+    }
+
+
+    // ==========================================
+    // GO TO DASHBOARD
+    // ==========================================
+
+    function goDashboard() {
+
+        window.location.href =
+            "dashboard.html";
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>
+

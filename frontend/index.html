@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS Portal</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        header {
+            background: #2563eb;
+            color: white;
+            padding: 18px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: bold;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 70px 20px;
+            background: white;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 13px 25px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .courses {
+            padding: 45px 60px;
+        }
+
+        .courses h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .course-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .course-card {
+            background: white;
+            width: 280px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .course-card h3 {
+            margin-bottom: 12px;
+            color: #2563eb;
+        }
+
+        .course-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+        }
+
+        footer {
+            text-align: center;
+            background: #172554;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎓 LMS Portal</h1>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#courses">Courses</a>
+        <a href="#">Login</a>
+        <a href="#">Register</a>
+    </nav>
+</header>
+
+<section class="hero">
+
+    <h2>Learn. Grow. Succeed. 🚀</h2>
+
+    <p>
+        Learn programming and improve your skills with our
+        Learning Management System.
+    </p>
+
+    <button class="btn" onclick="goToCourses()">
+        Explore Courses
+    </button>
+
+</section>
+
+<section class="courses" id="courses">
+
+    <h2>📚 Available Courses</h2>
+
+    <div class="course-container" id="courseContainer">
+
+        <p class="loading">
+            Loading courses...
+        </p>
+
+    </div>
+
+</section>
+
+<footer>
+    <p>© 2026 LMS Portal | Learning Management System</p>
+</footer>
+
+<script>
+
+    // Backend API URL
+    const API_URL = "http://localhost:8080/api/courses";
+
+
+    // Load courses from Spring Boot
+    async function loadCourses() {
+
+        const container = document.getElementById("courseContainer");
+
+        try {
+
+            const response = await fetch(API_URL);
+
+            if (!response.ok) {
+                throw new Error("Failed to load courses");
+            }
+
+            const courses = await response.json();
+
+            container.innerHTML = "";
+
+            if (courses.length === 0) {
+
+                container.innerHTML =
+                    "<p class='loading'>No courses available.</p>";
+
+                return;
+            }
+
+            courses.forEach(course => {
+
+                const card = document.createElement("div");
+
+                card.className = "course-card";
+
+                card.innerHTML = `
+                    <h3>${course.title || "Untitled Course"}</h3>
+
+                    <p>
+                        ${course.description || "No description available"}
+                    </p>
+
+                    <button class="btn"
+                        onclick="viewCourse(${course.id})">
+                        View Course
+                    </button>
+                `;
+
+                container.appendChild(card);
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            container.innerHTML = `
+                <p class="loading">
+                    ❌ Unable to connect to LMS server.
+                    <br>
+                    Please make sure Spring Boot is running.
+                </p>
+            `;
+        }
+    }
+
+
+    // Scroll to courses
+    function goToCourses() {
+
+        document.getElementById("courses")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+    }
+
+
+    // View course
+    function viewCourse(id) {
+
+        window.location.href =
+            "course.html?id=" + id;
+    }
+
+
+    // Load courses when page opens
+    loadCourses();
+
+</script>
+
+</body>
+</html>
